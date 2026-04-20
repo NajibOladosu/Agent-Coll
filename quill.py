@@ -272,7 +272,10 @@ def post_x(text):
         tweet_id = data["data"]["create_tweet"]["tweet_results"]["result"]["rest_id"]
         return f"https://x.com/i/web/status/{tweet_id}"
     except (KeyError, TypeError):
-        raise RuntimeError(f"X post failed: {data}")
+        # Empty tweet_results means X silently blocked it (duplicate or restricted).
+        # Return None so the run still saves the SHA and doesn't retry the same content.
+        print(f"Warning: X accepted the request but returned no tweet ID: {data}")
+        return None
 
 
 # --- Main ---
@@ -299,7 +302,7 @@ def main():
 
     print("--- Summary ---")
     print(f"LinkedIn post ID : {li_id}")
-    print(f"X tweet URL      : {x_url}")
+    print(f"X tweet URL      : {x_url if x_url else 'blocked (duplicate or restricted)'}")
     print(f"Topic            : [{commit['repo']}] {commit['message'][:60]}")
 
 
