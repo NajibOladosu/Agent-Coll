@@ -82,7 +82,7 @@ def select_best_commit():
 def call_gemini(system_prompt, user_prompt):
     url = (
         "https://generativelanguage.googleapis.com/v1beta"
-        f"/models/gemini-1.5-flash:generateContent?key={GEMINI_API_KEY}"
+        f"/models/gemini-2.5-flash:generateContent?key={GEMINI_API_KEY}"
     )
     payload = {
         "system_instruction": {"parts": [{"text": system_prompt}]},
