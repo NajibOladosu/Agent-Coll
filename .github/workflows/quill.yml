@@ -12,6 +12,9 @@ jobs:
   post:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: agents/quill
 
     steps:
       - uses: actions/checkout@v4
@@ -21,23 +24,20 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install requests requests-oauthlib
+        run: pip install requests
 
       - name: Run Quill
         env:
           LINKEDIN_TOKEN: ${{ secrets.LINKEDIN_TOKEN }}
-          X_CONSUMER_KEY: ${{ secrets.X_CONSUMER_KEY }}
-          X_CONSUMER_SECRET: ${{ secrets.X_CONSUMER_SECRET }}
-          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
-          X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python quill.py
 
       - name: Commit posted_commits.txt
+        working-directory: ${{ github.workspace }}
         run: |
           git config user.name  "quill-agent[bot]"
           git config user.email "quill-agent[bot]@users.noreply.github.com"
-          git add posted_commits.txt
+          git add agents/quill/posted_commits.txt
           if git diff --cached --quiet; then
             echo "Nothing to commit."
           else

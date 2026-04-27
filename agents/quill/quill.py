@@ -3,14 +3,9 @@ import os
 import time
 import requests
 from datetime import datetime, timedelta, timezone
-from requests_oauthlib import OAuth1Session
 
 LINKEDIN_TOKEN = os.environ["LINKEDIN_TOKEN"]
 LINKEDIN_URN   = "urn:li:person:G82eBN-mpx"
-X_CONSUMER_KEY        = os.environ["X_CONSUMER_KEY"]
-X_CONSUMER_SECRET     = os.environ["X_CONSUMER_SECRET"]
-X_ACCESS_TOKEN        = os.environ["X_ACCESS_TOKEN"]
-X_ACCESS_TOKEN_SECRET = os.environ["X_ACCESS_TOKEN_SECRET"]
 GEMINI_API_KEY = os.environ["GEMINI_API_KEY"]
 POSTED_FILE    = "posted_commits.txt"
 
@@ -162,31 +157,6 @@ def generate_linkedin(commit):
     return call_llm(system, f"{context}\n\nCommit message: {commit['message']}\n\nWrite the LinkedIn post:")
 
 
-def generate_x(commit):
-    rules = REPO_RULES[commit["repo"]]
-
-    if rules["public"]:
-        context = (
-            f"This is about {rules['name']}. "
-            f"Include the URL {rules['url']} (counts as exactly 23 characters toward the limit)."
-        )
-    else:
-        context = "This is about a private tool in development. Do NOT name it. Do NOT include a URL."
-
-    system = (
-        "You write punchy single tweets for X (Twitter). Hard limit: 280 characters total. "
-        "Every URL counts as exactly 23 characters regardless of actual length. "
-        "No markdown, no bullet points, 1-2 hashtags max, single tweet only. "
-        "Opener pattern: 'Just shipped: [thing]. [one-line why]. #buildinpublic'. "
-        "Target under 260 characters. Output only the tweet text, nothing else."
-    )
-
-    text = call_llm(system, f"{context}\n\nCommit message: {commit['message']}\n\nWrite the tweet:")
-    if len(text) > 280:
-        text = text[:277].rsplit(" ", 1)[0] + "..."
-    return text
-
-
 # --- Posting ---
 
 def post_linkedin(text):
@@ -219,38 +189,6 @@ def post_linkedin(text):
     return post_id
 
 
-def post_x(text):
-    twitter = OAuth1Session(
-        X_CONSUMER_KEY,
-        client_secret=X_CONSUMER_SECRET,
-        resource_owner_key=X_ACCESS_TOKEN,
-        resource_owner_secret=X_ACCESS_TOKEN_SECRET,
-    )
-
-    r = twitter.post(
-        "https://api.twitter.com/2/tweets",
-        json={"text": text},
-        timeout=30,
-    )
-    
-    print(f"X response status: {r.status_code}")
-    print(f"X response body: {r.text[:500]}")
-
-    if r.status_code != 201:
-        # 403 Forbidden might still happen if the app doesn't have Write permission
-        print(f"Warning: X API returned status {r.status_code}")
-        # Return None so the run still saves the SHA and doesn't retry the same content.
-        return None
-
-    try:
-        data = r.json()
-        tweet_id = data["data"]["id"]
-        return f"https://x.com/i/web/status/{tweet_id}"
-    except (KeyError, TypeError) as e:
-        print(f"Warning: X accepted the request but returned unexpected format: {data}")
-        return None
-
-
 # --- Main ---
 
 def main():
@@ -263,19 +201,15 @@ def main():
     print(f"Selected: [{commit['repo']}] {commit['message']}")
 
     li_text = generate_linkedin(commit)
-    x_text  = generate_x(commit)
 
-    print(f"\n--- LinkedIn ({len(li_text.split())} words) ---\n{li_text}")
-    print(f"\n--- X ({len(x_text)} chars) ---\n{x_text}\n")
+    print(f"\n--- LinkedIn ({len(li_text.split())} words) ---\n{li_text}\n")
 
     li_id = post_linkedin(li_text)
-    x_url = post_x(x_text)
 
     save_posted_sha(commit["sha"])
 
     print("--- Summary ---")
     print(f"LinkedIn post ID : {li_id}")
-    print(f"X tweet URL      : {x_url if x_url else 'blocked (duplicate or restricted)'}")
     print(f"Topic            : [{commit['repo']}] {commit['message'][:60]}")
 
 
