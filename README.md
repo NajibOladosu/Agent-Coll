@@ -4,7 +4,7 @@ Autonomous social media agent for Najib. Runs daily via GitHub Actions — fetch
 
 ## How it works
 
-1. Fetches commits from the last 48 hours across three repos: Velluma, AURA, ApplyOS
+1. Fetches commits from the last 168 hours (1 week) across three repos: Velluma, AURA, ApplyOS
 2. Filters out noise commits (chore, style, docs, merge, bump, wip)
 3. Picks the highest-priority commit (feat > fix > refactor/perf > other)
 4. Skips any commit SHA already in `posted_commits.txt` (deduplication)
