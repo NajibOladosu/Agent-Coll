@@ -52,7 +52,7 @@ def fetch_commits(repo):
 
 
 def is_recent(date_str):
-    cutoff = datetime.now(timezone.utc) - timedelta(hours=48)
+    cutoff = datetime.now(timezone.utc) - timedelta(hours=168)
     dt = datetime.fromisoformat(date_str.replace("Z", "+00:00"))
     return dt >= cutoff
 
