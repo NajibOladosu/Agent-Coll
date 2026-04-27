@@ -8,8 +8,10 @@ Autonomous LinkedIn posting agent for Najib. Runs daily via GitHub Actions — f
 2. Filters out noise commits (chore, style, docs, merge, bump, wip)
 3. Picks the highest-priority commit (feat > fix > refactor/perf > other)
 4. Skips any commit SHA already in `posted_commits.txt` (deduplication)
-5. Generates a LinkedIn post using Gemini 2.5 Flash Lite
-6. Posts to LinkedIn and records the commit SHA
+5. Sends commit patches to Gemini 2.5 Flash. Single structured call returns: the LinkedIn post text **and** the file + line range of the snippet that best illustrates what the post discusses
+6. Fetches that file at the commit SHA, slices the chosen lines, renders a Carbon-style snippet image (Pillow + Pygments, Cascadia Mono, gradient backdrop)
+7. Uploads image to LinkedIn and posts with image attached
+8. Records the commit SHA
 
 ## Schedule
 
@@ -49,7 +51,8 @@ LinkedIn tokens expire after ~60 days. When the run logs `LinkedIn token invalid
 ## Files
 
 - `quill.py` — main script
+- `snippet_image.py` — Carbon-style code snippet renderer
+- `fonts/` — Cascadia Mono TTFs bundled for consistent rendering on CI
 - `posted_commits.txt` — log of posted commit SHAs (auto-updated by the workflow)
-- `INSTRUCTIONS.md` — voice/style guide for generated posts
 
 The workflow lives at `.github/workflows/quill.yml` in the repo root.
