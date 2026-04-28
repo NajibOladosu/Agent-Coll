@@ -1,0 +1,2 @@
+# reddit_advocate ledger
+# format: timestamp_iso \t action_id \t subreddit \t thread_id \t kind \t text_hash

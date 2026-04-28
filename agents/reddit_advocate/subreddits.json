@@ -1,0 +1,132 @@
+{
+  "_comment": "Tier 1 = engage only (no links, no product names). Tier 2 = promo allowed in megathread/specific day. Use products list to gate which threads each agent considers relevant.",
+  "tiers": {
+    "tier1_engage_only": [
+      {
+        "name": "cscareerquestions",
+        "products": ["ApplyOS"],
+        "min_karma": 10,
+        "min_account_age_days": 30,
+        "promo_allowed": false,
+        "notes": "strict mods, no self-promo ever. Pure value comments."
+      },
+      {
+        "name": "jobs",
+        "products": ["ApplyOS"],
+        "min_karma": 5,
+        "min_account_age_days": 14,
+        "promo_allowed": false
+      },
+      {
+        "name": "recruitinghell",
+        "products": ["ApplyOS"],
+        "min_karma": 5,
+        "min_account_age_days": 14,
+        "promo_allowed": false
+      },
+      {
+        "name": "ExperiencedDevs",
+        "products": ["ApplyOS"],
+        "min_karma": 50,
+        "min_account_age_days": 60,
+        "promo_allowed": false
+      },
+      {
+        "name": "jobsearchhacks",
+        "products": ["ApplyOS"],
+        "min_karma": 5,
+        "min_account_age_days": 14,
+        "promo_allowed": false
+      },
+      {
+        "name": "nursing",
+        "products": ["AURA"],
+        "min_karma": 10,
+        "min_account_age_days": 30,
+        "promo_allowed": false,
+        "notes": "verify-flair sub. Likely won't engage as patient. Skip until verified."
+      },
+      {
+        "name": "medicine",
+        "products": ["AURA"],
+        "min_karma": 10,
+        "min_account_age_days": 30,
+        "promo_allowed": false,
+        "notes": "verified flair. Skip unless flaired."
+      },
+      {
+        "name": "emergencymedicine",
+        "products": ["AURA"],
+        "min_karma": 10,
+        "min_account_age_days": 30,
+        "promo_allowed": false
+      }
+    ],
+    "tier2_promo_allowed": [
+      {
+        "name": "SaaS",
+        "products": ["AURA", "ApplyOS"],
+        "min_karma": 0,
+        "min_account_age_days": 0,
+        "promo_allowed": true,
+        "promo_day": "saturday",
+        "notes": "self-promo Saturday only"
+      },
+      {
+        "name": "SideProject",
+        "products": ["AURA", "ApplyOS"],
+        "min_karma": 0,
+        "min_account_age_days": 0,
+        "promo_allowed": true,
+        "promo_day": null
+      },
+      {
+        "name": "indiehackers",
+        "products": ["AURA", "ApplyOS"],
+        "min_karma": 0,
+        "min_account_age_days": 0,
+        "promo_allowed": true,
+        "promo_day": null
+      },
+      {
+        "name": "Entrepreneur",
+        "products": ["AURA", "ApplyOS"],
+        "min_karma": 50,
+        "min_account_age_days": 30,
+        "promo_allowed": true,
+        "promo_day": "sunday",
+        "notes": "Self-promo Sunday only"
+      },
+      {
+        "name": "startups",
+        "products": ["AURA", "ApplyOS"],
+        "min_karma": 50,
+        "min_account_age_days": 30,
+        "promo_allowed": true,
+        "promo_day": "saturday",
+        "notes": "Share Saturday only"
+      },
+      {
+        "name": "EntrepreneurRideAlong",
+        "products": ["AURA", "ApplyOS"],
+        "min_karma": 0,
+        "min_account_age_days": 0,
+        "promo_allowed": true,
+        "promo_day": null
+      }
+    ]
+  },
+  "pain_keywords": {
+    "ApplyOS": [
+      "applied to", "applications", "no response", "no callback", "ghosted",
+      "ats", "resume", "tracking applications", "spreadsheet", "job search",
+      "cover letter", "tailoring", "job hunt", "rejected", "interview prep",
+      "follow up", "linkedin easy apply", "applying to jobs"
+    ],
+    "AURA": [
+      "triage", "esi", "acuity", "patient flow", "ed boarding", "wait time",
+      "charge nurse", "assessment", "chief complaint", "vital signs",
+      "handoff", "sbar", "nursing workflow", "documentation"
+    ]
+  }
+}

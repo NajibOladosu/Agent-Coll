@@ -4,10 +4,28 @@ import json
 import os
 import re
 import time
-import requests
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
 
-from snippet_image import render_snippet
+
+def _load_dotenv(path):
+    if not path.exists():
+        return
+    for raw in path.read_text().splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, val = line.partition("=")
+        key = key.strip()
+        val = val.strip().strip('"').strip("'")
+        os.environ.setdefault(key, val)
+
+
+_load_dotenv(Path(__file__).resolve().parent.parent.parent / ".env")
+
+import requests  # noqa: E402
+
+from snippet_image import render_snippet  # noqa: E402
 
 LINKEDIN_TOKEN = os.environ["LINKEDIN_TOKEN"]
 LINKEDIN_URN   = "urn:li:person:G82eBN-mpx"

@@ -1,0 +1,52 @@
+name: Reddit Advocate Post
+
+on:
+  schedule:
+    - cron: '30 */2 * * *'   # every 2 hours, offset by 30 min
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: agents/reddit_advocate
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install praw requests
+
+      - name: Run poster
+        env:
+          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
+          REDDIT_USERNAME: ${{ secrets.REDDIT_USERNAME }}
+          REDDIT_PASSWORD: ${{ secrets.REDDIT_PASSWORD }}
+          REDDIT_USER_AGENT: ${{ secrets.REDDIT_USER_AGENT }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          REDDIT_DAILY_CAP: ${{ vars.REDDIT_DAILY_CAP || '5' }}
+          REDDIT_KILL: ${{ vars.REDDIT_KILL || '0' }}
+        run: python advocate.py post
+
+      - name: Commit ledger + candidate updates
+        working-directory: ${{ github.workspace }}
+        run: |
+          git config user.name  "reddit-advocate[bot]"
+          git config user.email "reddit-advocate[bot]@users.noreply.github.com"
+          git add agents/reddit_advocate/posted.txt agents/reddit_advocate/candidates/
+          if git diff --cached --quiet; then
+            echo "Nothing to commit."
+          else
+            git commit -m "chore: record reddit posts"
+            git push
+          fi
