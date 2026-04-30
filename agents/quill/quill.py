@@ -32,6 +32,8 @@ LINKEDIN_URN   = "urn:li:person:G82eBN-mpx"
 GEMINI_API_KEY = os.environ["GEMINI_API_KEY"]
 GITHUB_TOKEN   = os.environ.get("GITHUB_TOKEN")
 POSTED_FILE    = "posted_commits.txt"
+LAST_POST_JSON = "last_post.json"
+LAST_POST_PNG  = "last_post.png"
 
 CODE_EXTENSIONS = {
     "py", "ts", "tsx", "js", "jsx", "go", "rs", "rb", "java", "kt",
@@ -78,6 +80,27 @@ def load_posted_shas():
 def save_posted_sha(sha):
     with open(POSTED_FILE, "a") as f:
         f.write(sha + "\n")
+
+
+def save_last_post(commit, post_text, alt, snippet_path, png_bytes, li_post_id):
+    """Persist the latest post artifacts so downstream agents (e.g. Echo for X)
+    can mirror it without rerunning the LLM pipeline."""
+    payload = {
+        "sha": commit["sha"],
+        "repo": commit["repo"],
+        "message": commit["message"],
+        "post": post_text,
+        "alt": alt or "",
+        "snippet_path": snippet_path or "",
+        "linkedin_post_id": li_post_id,
+        "image": bool(png_bytes),
+    }
+    Path(LAST_POST_JSON).write_text(json.dumps(payload, indent=2) + "\n")
+    if png_bytes:
+        Path(LAST_POST_PNG).write_bytes(png_bytes)
+    elif Path(LAST_POST_PNG).exists():
+        # Stale image from a previous run would mismatch this post — drop it.
+        Path(LAST_POST_PNG).unlink()
 
 
 def _gh_headers():
@@ -498,6 +521,7 @@ def main():
     li_id = post_linkedin(post_text, image_asset_urn=asset_urn, image_alt=alt)
 
     save_posted_sha(commit["sha"])
+    save_last_post(commit, post_text, alt, snippet_path, png, li_id)
 
     print("--- Summary ---")
     print(f"LinkedIn post ID : {li_id}")

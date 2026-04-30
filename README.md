@@ -6,17 +6,22 @@ Monorepo for Najib's autonomous agents. Each agent lives under `agents/<name>/` 
 
 | Name | Path | Purpose |
 |---|---|---|
-| Quill | `agents/quill/` | Daily LinkedIn + X post from recent commits |
+| Quill | `agents/quill/` | Daily LinkedIn post from recent commits (runs in GitHub Actions) |
+| Echo  | `agents/echo/`  | Mirrors Quill's latest LinkedIn post to X (runs locally via cron) |
 
 ## Layout
 
 ```
 .
 ├── agents/
-│   └── quill/              # social posting agent
-│       ├── quill.py
-│       ├── posted_commits.txt
-│       ├── INSTRUCTIONS.md
+│   ├── quill/              # LinkedIn poster (GitHub Actions)
+│   │   ├── quill.py
+│   │   ├── posted_commits.txt
+│   │   ├── last_post.{json,png}   # written by quill, consumed by echo
+│   │   └── README.md
+│   └── echo/               # X mirror of quill (local cron)
+│       ├── echo.py
+│       ├── run.sh
 │       └── README.md
 ├── .github/workflows/      # one workflow per agent
 │   └── quill.yml

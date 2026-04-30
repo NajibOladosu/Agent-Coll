@@ -2,3 +2,9 @@
 .claude/
 __pycache__/
 *.pyc
+
+# Echo (local-only state)
+agents/echo/.venv/
+agents/echo/twitter_cookies.json
+agents/echo/posted_x.txt
+agents/echo/echo.log
