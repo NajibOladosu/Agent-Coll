@@ -1,0 +1,10 @@
+{
+  "sha": "72fff83dd3aeaf50c51939b7e467a05bafb92b25",
+  "repo": "ApplyOS",
+  "message": "feat: adjust AI orb camera position",
+  "post": "The AI Orb in ApplyOS felt a bit too close, almost intrusive. It was impacting the user's perception of the interview space.\n\nI needed to adjust the camera's perspective to create a more balanced and natural view. The goal was to make the AI feel present, but not overwhelming.\n\nAfter some iteration, I found that a slight adjustment to the Z-axis of the camera position resolved the issue. It's a small change, but it significantly improved the overall feel of the experience.\n\nHow do you approach subtle UI adjustments that have a large perceptual impact?",
+  "alt": "A code snippet showing the adjustment of the camera's Z-axis position in a React component.",
+  "snippet_path": "modules/interviews/components/ai-orb.tsx",
+  "linkedin_post_id": "urn:li:share:7455561840970919936",
+  "image": true
+}
