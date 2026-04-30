@@ -55,6 +55,7 @@ EXT_TO_LANG = {
 }
 
 MAX_SNIPPET_LINES = 22
+THREAD_SIZE       = 10  # commits of context the LLM sees around the anchor
 
 GEMINI_MODELS  = ["gemini-2.5-flash-lite", "gemini-2.5-flash"]
 
@@ -157,6 +158,46 @@ def relevant_changed_files(commit_detail):
             "changes": f.get("changes", 0),
         })
     out.sort(key=lambda x: -x["changes"])
+    return out
+
+
+def fetch_context_thread(repo, anchor_sha, n=THREAD_SIZE):
+    """Return the last `n` non-noise commits in `repo` ending at the anchor.
+
+    Ordered oldest -> newest in the returned list, so it reads as a narrative.
+    Always includes the anchor itself. Drops chore/bump/style/wip/docs/merge
+    noise so the LLM sees signal only. Earlier siblings beyond the API page
+    are ignored — 10 is enough story.
+    """
+    try:
+        commits = fetch_commits(repo)  # newest first, up to 20
+    except Exception as e:
+        print(f"Warning: thread fetch failed for {repo}: {e}")
+        return []
+
+    anchor_idx = next(
+        (i for i, c in enumerate(commits) if c["sha"] == anchor_sha), None
+    )
+    if anchor_idx is None:
+        window = commits
+    else:
+        # Anchor + everything older, then trim to n meaningful commits.
+        window = commits[anchor_idx:]
+
+    out = []
+    for c in window:
+        msg = c["commit"]["message"].split("\n")[0].strip()
+        if any(msg.lower().startswith(p) for p in SKIP_PREFIXES):
+            continue
+        out.append({
+            "sha":     c["sha"],
+            "message": msg,
+            "date":    c["commit"]["author"]["date"],
+        })
+        if len(out) >= n:
+            break
+
+    out.reverse()  # oldest -> newest
     return out
 
 
@@ -263,11 +304,12 @@ def _extract_json(text):
     return json.loads(s)
 
 
-def generate_post_and_slice(commit, files):
+def generate_post_and_slice(commit, files, thread):
     """Single LLM call: returns dict {post, file, start_line, end_line, language, alt}.
 
-    The chosen slice corresponds to lines in the FINAL file (post-commit), so we can
-    fetch that file at the commit SHA and slice by line numbers.
+    `thread` is a list of recent commits in the same repo (oldest -> newest,
+    anchor included). The LLM uses the thread to infer the broader theme/effort
+    across many commits, but the post focuses on the anchor's diff and snippet.
     """
     rules = REPO_RULES[commit["repo"]]
 
@@ -285,10 +327,27 @@ def generate_post_and_slice(commit, files):
         )
 
     files_blob = _format_files_for_prompt(files)
+    thread_blob = "\n".join(
+        f"- {c['date'][:10]} [{c['sha'][:7]}] {c['message']}" for c in thread
+    ) or "(no thread context available)"
 
     system = (
         "You write LinkedIn posts for Najib, a software builder, AND choose a code "
         "snippet that visually accompanies the post.\n\n"
+        "INPUT MODEL:\n"
+        "- RECENT COMMITS: an oldest-to-newest list of recent commits in this repo. "
+        "Use it to understand the broader effort/initiative — what was being built, "
+        "what problems came up, how the work evolved. The anchor commit is the LAST "
+        "one in the list.\n"
+        "- ANCHOR COMMIT + DIFF: the specific commit whose code we will show. The "
+        "snippet must come from this commit's changed files.\n\n"
+        "POST GUIDANCE:\n"
+        "- Synthesize the THEME across the thread, not just the anchor's one-line "
+        "message. A small message can be one step in a bigger arc — find the arc.\n"
+        "- The post should describe the broader problem/initiative the thread reveals, "
+        "with the anchor's change as the concrete moment to anchor on.\n"
+        "- If the thread is incoherent (unrelated commits), default to writing about "
+        "the anchor only.\n\n"
         "POST VOICE: technical, reflective, grounded. Builder in public.\n"
         "POST STRUCTURE: (1) Hook — tension or problem, (2) Challenge — what was being "
         "built and why, (3) Decision or lesson — what was figured out, (4) Reader question "
@@ -297,7 +356,8 @@ def generate_post_and_slice(commit, files):
         "bullet points, no buzzwords ('excited to announce', 'game-changer', 'leveraging'), "
         "no emojis, no fabrication, 150-280 words.\n\n"
         "SNIPPET RULES:\n"
-        "- Pick the single most representative contiguous block from ONE of the changed files.\n"
+        "- Pick the single most representative contiguous block from ONE of the ANCHOR "
+        "commit's changed files.\n"
         "- The block MUST illustrate the specific decision or lesson the post talks about.\n"
         "- Block size: between 6 and "
         f"{MAX_SNIPPET_LINES} lines.\n"
@@ -315,8 +375,9 @@ def generate_post_and_slice(commit, files):
 
     user = (
         f"{context}\n\n"
-        f"Commit message: {commit['message']}\n\n"
-        f"Changed files and patches:\n\n{files_blob}\n\n"
+        f"RECENT COMMITS (oldest -> newest, anchor is last):\n{thread_blob}\n\n"
+        f"ANCHOR COMMIT MESSAGE: {commit['message']}\n\n"
+        f"ANCHOR COMMIT — changed files and patches:\n\n{files_blob}\n\n"
         "Return the JSON now."
     )
 
@@ -423,7 +484,7 @@ def slice_code(code: str, start_line: int, end_line: int):
     return "\n".join(lines[s - 1:e]), s, e
 
 
-def build_post_and_image(commit):
+def build_post_and_image(commit, thread):
     """Returns (post_text, png_bytes_or_None, alt_text_or_None, snippet_path_or_None)."""
     try:
         detail = fetch_commit_detail(commit["repo"], commit["sha"])
@@ -431,20 +492,26 @@ def build_post_and_image(commit):
         print(f"Warning: could not fetch commit detail: {e}")
         return None, None, None, None
 
+    thread_blob = "\n".join(
+        f"- {c['date'][:10]} {c['message']}" for c in thread
+    ) or f"- {commit['message']}"
+
     files = relevant_changed_files(detail)
     if not files:
         print("No code files in commit — text-only post.")
         post = call_llm(
             "Write a short LinkedIn post in Najib's builder-in-public voice. "
-            "First person, 150-280 words, no emojis, no buzzwords, end with a "
-            "reader question. Output post text only.",
-            f"Commit message: {commit['message']}",
+            "Synthesize the broader theme from the recent commits (oldest -> newest, "
+            "anchor is last); the post should be about that theme, not just the "
+            "anchor's one-line message. First person, 150-280 words, no emojis, no "
+            "buzzwords, end with a reader question. Output post text only.",
+            f"RECENT COMMITS:\n{thread_blob}\n\nANCHOR: {commit['message']}",
             max_tokens=600,
         )
         return post, None, None, None
 
     try:
-        result = generate_post_and_slice(commit, files)
+        result = generate_post_and_slice(commit, files, thread)
     except Exception as e:
         print(f"Warning: structured generation failed ({e}); falling back to text-only.")
         return None, None, None, None
@@ -500,9 +567,14 @@ def main():
         print("No new unposted commits in the last week. Skipping.")
         return
 
-    print(f"Selected: [{commit['repo']}] {commit['message']}")
+    thread = fetch_context_thread(commit["repo"], commit["sha"])
+    print(f"Anchor : [{commit['repo']}] {commit['message']}")
+    print(f"Thread : {len(thread)} commits of context")
+    for c in thread:
+        marker = "*" if c["sha"] == commit["sha"] else " "
+        print(f"  {marker} {c['date'][:10]} {c['sha'][:7]} {c['message'][:80]}")
 
-    post_text, png, alt, snippet_path = build_post_and_image(commit)
+    post_text, png, alt, snippet_path = build_post_and_image(commit, thread)
     if not post_text:
         raise RuntimeError("Post generation failed.")
 
@@ -520,7 +592,11 @@ def main():
 
     li_id = post_linkedin(post_text, image_asset_urn=asset_urn, image_alt=alt)
 
-    save_posted_sha(commit["sha"])
+    # Mark the entire thread as consumed so next run starts a fresh window.
+    consumed = {c["sha"] for c in thread} | {commit["sha"]}
+    for sha in consumed:
+        if sha not in posted_shas:
+            save_posted_sha(sha)
     save_last_post(commit, post_text, alt, snippet_path, png, li_id)
 
     print("--- Summary ---")
