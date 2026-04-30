@@ -7,4 +7,4 @@ __pycache__/
 agents/echo/.venv/
 agents/echo/twitter_cookies.json
 agents/echo/posted_x.txt
-agents/echo/echo.log
+agents/echo/*.log

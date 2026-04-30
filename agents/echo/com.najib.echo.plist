@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.najib.echo</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>/Users/najiboladosu/Documents/Projects/Agent-Coll/agents/echo/run.sh</string>
+    </array>
+
+    <!--
+        Fire daily at 10:30 local time. The Quill GitHub Actions workflow runs
+        at 09:00 UTC; run.sh polls until that workflow finishes successfully
+        before posting, so the exact local time only sets a *lower bound*.
+
+        If the laptop is asleep at 10:30, launchd runs the job on next wake.
+        If the laptop is off, launchd runs it the next time launchd loads
+        and a calendar interval is in the past.
+    -->
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>10</integer>
+        <key>Minute</key>
+        <integer>30</integer>
+    </dict>
+
+    <!-- Don't run on every login/load — only on calendar interval + missed wake. -->
+    <key>RunAtLoad</key>
+    <false/>
+
+    <key>StandardOutPath</key>
+    <string>/Users/najiboladosu/Documents/Projects/Agent-Coll/agents/echo/echo.launchd.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/najiboladosu/Documents/Projects/Agent-Coll/agents/echo/echo.launchd.log</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+    </dict>
+
+    <!-- Be a polite background job. -->
+    <key>ProcessType</key>
+    <string>Background</string>
+    <key>LowPriorityIO</key>
+    <true/>
+    <key>Nice</key>
+    <integer>5</integer>
+</dict>
+</plist>
