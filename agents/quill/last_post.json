@@ -1,10 +1,10 @@
 {
-  "sha": "24cc3c8dc3b66a3c8f2d04557ade2d4f77094d4f",
+  "sha": "72fff83dd3aeaf50c51939b7e467a05bafb92b25",
   "repo": "ApplyOS",
-  "message": "feat: add session duration tracking, enforce interviewer persona identity, and refine interview UI layout",
-  "post": "Tracking interview duration wasn't initially a priority for ApplyOS (applyos.io). My focus was on core functionality: getting questions asked and answers recorded.\n\nBut as I refined the interview flow, I realized that understanding session length is crucial for both user experience and system optimization. It helps users gauge their time commitment and provides valuable data for improving the AI's efficiency.\n\nSo, I added session duration tracking. This involved capturing `conversation_started_at` and `conversation_ended_at` timestamps in the database and calculating the difference. It\u2019s a small addition, but it grounds the experience in measurable data.\n\nWhat quantitative metrics do you find most valuable for iterating on user-facing features?",
-  "alt": "Code snippet showing the calculation of total duration in seconds by subtracting the start time from the end time.",
-  "snippet_path": "app/api/interview/live-session/complete/route.ts",
-  "linkedin_post_id": "urn:li:share:7455568907425431552",
+  "message": "feat: adjust AI orb camera position",
+  "post": "The UI for ApplyOS (applyos.io) needs to feel dynamic and responsive, especially when interacting with AI features. Early on, the AI orb component felt a bit too close, almost intrusive.\n\nWe were iterating on the interview experience, aiming for a more natural feel. The orb's camera position directly impacts the user's perception of the AI's presence.\n\nAdjusting the camera's Z-axis from 3 to 3.5 provided just enough distance, subtly enhancing the visual hierarchy and making the orb feel more like a companion than a focal point. It\u2019s a small change, but it refines the overall user experience.\n\nWhat small UI adjustments have had a surprisingly large impact on your projects?",
+  "alt": "A React component snippet showing the adjustment of the camera's Z-axis position for a 3D canvas element.",
+  "snippet_path": "modules/interviews/components/ai-orb.tsx",
+  "linkedin_post_id": "urn:li:share:7455923605915488256",
   "image": true
 }
