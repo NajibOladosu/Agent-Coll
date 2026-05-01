@@ -48,6 +48,20 @@ bash agents/echo/install-launchd.sh install
 
 This copies `com.najib.echo.plist` to `~/Library/LaunchAgents/` and `bootstrap`s it into the user GUI domain. The job fires daily at **10:30 local**; macOS reruns missed `StartCalendarInterval` jobs on wake.
 
+### Required: grant `/bin/bash` Full Disk Access
+
+This repo lives under `~/Documents/`, which macOS protects via TCC. launchd-spawned `/bin/bash` cannot read files there by default — the job will exit `126` with `Operation not permitted` and `run.sh` will never start.
+
+One-time fix:
+
+1. Open **System Settings → Privacy & Security → Full Disk Access**.
+2. Click **+**, press **Cmd+Shift+G**, enter `/bin/bash`, hit Go.
+3. Add it and toggle the switch ON.
+4. Re-run: `bash agents/echo/install-launchd.sh kick`
+5. Confirm: `bash agents/echo/install-launchd.sh status` shows `last exit code = 0` (or in-flight).
+
+If `last exit code = 126`, FDA still isn't applied to `/bin/bash`.
+
 Other commands:
 
 | Command                                          | What it does                                  |

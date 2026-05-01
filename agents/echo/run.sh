@@ -63,17 +63,23 @@ parse_status() {
   #   "no_run_today"
   #   "parse_error"
   #   "<status>|<conclusion>"   e.g. "completed|success", "in_progress|", "queued|"
-  /usr/bin/python3 - <<'PY' 2>/dev/null
-import json, sys, os
+  #
+  # JSON is read from $WF_JSON env var, NOT stdin — using `python3 - <<'PY'`
+  # would redirect stdin to the heredoc and clobber the piped response.
+  /usr/bin/python3 -c '
+import json, os, sys
 from datetime import datetime, timezone
-data = json.load(sys.stdin)
+try:
+    data = json.loads(os.environ.get("WF_JSON", ""))
+except Exception:
+    print("parse_error"); sys.exit()
 today = datetime.now(timezone.utc).date().isoformat()
 runs = [r for r in data.get("workflow_runs", []) if r.get("created_at", "")[:10] >= today]
 if not runs:
     print("no_run_today"); sys.exit()
 r = runs[0]
-print(f"{r.get('status','')}|{r.get('conclusion') or ''}")
-PY
+print("{}|{}".format(r.get("status",""), r.get("conclusion") or ""))
+' 2>/dev/null
 }
 
 workflow_ok=0
@@ -87,7 +93,7 @@ while [ $(date +%s) -lt $deadline ]; do
     continue
   fi
 
-  parsed=$(printf '%s' "$resp" | parse_status)
+  parsed=$(WF_JSON="$resp" parse_status)
   parsed=${parsed:-parse_error}
   log "Workflow status: $parsed"
 
