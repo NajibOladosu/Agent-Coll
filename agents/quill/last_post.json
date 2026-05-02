@@ -1,10 +1,10 @@
 {
-  "sha": "72fff83dd3aeaf50c51939b7e467a05bafb92b25",
+  "sha": "f9f50fb0728cacece1b431f9a49ce134b9085f2f",
   "repo": "ApplyOS",
-  "message": "feat: adjust AI orb camera position",
-  "post": "The UI for ApplyOS (applyos.io) needs to feel dynamic and responsive, especially when interacting with AI features. Early on, the AI orb component felt a bit too close, almost intrusive.\n\nWe were iterating on the interview experience, aiming for a more natural feel. The orb's camera position directly impacts the user's perception of the AI's presence.\n\nAdjusting the camera's Z-axis from 3 to 3.5 provided just enough distance, subtly enhancing the visual hierarchy and making the orb feel more like a companion than a focal point. It\u2019s a small change, but it refines the overall user experience.\n\nWhat small UI adjustments have had a surprisingly large impact on your projects?",
-  "alt": "A React component snippet showing the adjustment of the camera's Z-axis position for a 3D canvas element.",
-  "snippet_path": "modules/interviews/components/ai-orb.tsx",
-  "linkedin_post_id": "urn:li:share:7455923605915488256",
+  "message": "feat: rename Capture button to Save Version in resume editor",
+  "post": "The ApplyOS resume editor (applyos.io) has evolved from a simple tool to a more robust document creation platform. Initially, we focused on core functionality. As we expanded, the need to refine user interaction became clear.\n\nOne small but significant change was renaming the 'Capture' button to 'Save Version.' This wasn't just a cosmetic tweak; it reflected a deeper understanding of how users interact with their documents. 'Capture' implied a one-off snapshot, while 'Save Version' better communicated the ability to iterate and maintain document history.\n\nThis shift in terminology helps users understand the underlying capabilities more intuitively. It's a reminder that even small details in language can significantly impact the user experience and how they perceive the tool's power.\n\nHow do you approach naming features to best represent their functionality?",
+  "alt": "A button with the text 'Save Version' and a save icon, with a conditional loader icon if the save is in progress.",
+  "snippet_path": "modules/applications/components/resume-editor.tsx",
+  "linkedin_post_id": "urn:li:share:7456280178126835712",
   "image": true
 }
