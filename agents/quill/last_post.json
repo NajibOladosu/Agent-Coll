@@ -1,10 +1,10 @@
 {
-  "sha": "f9f50fb0728cacece1b431f9a49ce134b9085f2f",
-  "repo": "ApplyOS",
-  "message": "feat: rename Capture button to Save Version in resume editor",
-  "post": "The ApplyOS resume editor (applyos.io) has evolved from a simple tool to a more robust document creation platform. Initially, we focused on core functionality. As we expanded, the need to refine user interaction became clear.\n\nOne small but significant change was renaming the 'Capture' button to 'Save Version.' This wasn't just a cosmetic tweak; it reflected a deeper understanding of how users interact with their documents. 'Capture' implied a one-off snapshot, while 'Save Version' better communicated the ability to iterate and maintain document history.\n\nThis shift in terminology helps users understand the underlying capabilities more intuitively. It's a reminder that even small details in language can significantly impact the user experience and how they perceive the tool's power.\n\nHow do you approach naming features to best represent their functionality?",
-  "alt": "A button with the text 'Save Version' and a save icon, with a conditional loader icon if the save is in progress.",
-  "snippet_path": "modules/applications/components/resume-editor.tsx",
-  "linkedin_post_id": "urn:li:share:7456280178126835712",
+  "sha": "619dc5c1e87475ea17e50fa7c6a78dc635bd5116",
+  "repo": "AURA",
+  "message": "fix follow-up questions semantics and add a refine section. Backend, types, and UI are done;",
+  "post": "When building AURA (auratriage.vercel.app), we needed to refine how the AI asks follow-up questions. Initially, the AI asked questions that were meant for the user to ask the AI.\n\nThis led to confusion. The goal is to make the AI a better conversational partner, capable of asking clarifying questions to improve its own assessment, and also providing questions the user might want to ask.\n\nWe've now separated these into two distinct types: `clarifyingQuestions` (for the AI to ask the user) and `suggestedFollowUpQuestions` (for the user to ask the AI). This change makes the interaction more intuitive and the AI more helpful.\n\nHow do you approach differentiating AI-driven vs. user-driven questions in conversational interfaces?",
+  "alt": "Code block showing the Gemini API route defining clarifyingQuestions and suggestedFollowUpQuestions for the AI's response.",
+  "snippet_path": "server/routes/gemini.js",
+  "linkedin_post_id": "urn:li:share:7456643709837852672",
   "image": true
 }
