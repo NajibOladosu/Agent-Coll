@@ -1,10 +1,10 @@
 {
-  "sha": "619dc5c1e87475ea17e50fa7c6a78dc635bd5116",
-  "repo": "AURA",
-  "message": "fix follow-up questions semantics and add a refine section. Backend, types, and UI are done;",
-  "post": "When building AURA (auratriage.vercel.app), we needed to refine how the AI asks follow-up questions. Initially, the AI asked questions that were meant for the user to ask the AI.\n\nThis led to confusion. The goal is to make the AI a better conversational partner, capable of asking clarifying questions to improve its own assessment, and also providing questions the user might want to ask.\n\nWe've now separated these into two distinct types: `clarifyingQuestions` (for the AI to ask the user) and `suggestedFollowUpQuestions` (for the user to ask the AI). This change makes the interaction more intuitive and the AI more helpful.\n\nHow do you approach differentiating AI-driven vs. user-driven questions in conversational interfaces?",
-  "alt": "Code block showing the Gemini API route defining clarifyingQuestions and suggestedFollowUpQuestions for the AI's response.",
-  "snippet_path": "server/routes/gemini.js",
-  "linkedin_post_id": "urn:li:share:7456643709837852672",
+  "sha": "b1abf8f0ecf4b38b9b113716798d3f83f664fcda",
+  "repo": "Velluma",
+  "message": "feat: add contract selection to time tracker and require contract for starting sessions",
+  "post": "Building out features often reveals subtle dependencies. Initially, the time tracker was designed to log tasks without explicit contract association.\n\nHowever, as the platform evolved to manage projects with multiple contracts and clients, it became clear that associating time entries with specific contracts was crucial for accurate billing and reporting. This meant a significant change: requiring a contract selection before a timer could start.\n\nThis decision wasn't just about adding a dropdown. It involved rethinking the session start logic and ensuring the user interface guided this new requirement smoothly. The key was to make the selection feel natural, not like an extra hurdle.\n\nHow do you approach integrating new, mandatory fields into existing workflows without disrupting the user experience?",
+  "alt": "A select dropdown menu for choosing a contract, populated with options like 'Project Alpha \u2014 Client X'.",
+  "snippet_path": "apps/web/src/app/(dashboard)/time/page.tsx",
+  "linkedin_post_id": "urn:li:share:7457375848833269761",
   "image": true
 }
