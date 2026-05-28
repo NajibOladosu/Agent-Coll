@@ -1,10 +1,10 @@
 {
-  "sha": "443eb573bc75fdfc2fbbd790b517e017e2f00bb9",
+  "sha": "cedd9d09ba823eef69255842eda0d8914e13a2db",
   "repo": "ApplyOS",
-  "message": "blog: Mastering Behavioral Interview Questions: Your AI-Powered Edge",
-  "post": "This past week has been a whirlwind of building out the core experience and expanding our content creation capabilities. We've been refining how our system handles security, consolidating responsibilities within the proxy handler to ensure a cleaner, more efficient process for generating content security policies and nonces. Simultaneously, we're improving the underlying AI models, implementing a cooldown period for models that encounter quota issues and upgrading their capabilities for higher token limits, which directly impacts the quality and depth of the content they can produce.\n\nOn the user-facing side, we've been polishing the interview experience. This includes enhancing UI layouts, adjusting the AI orb's camera position for better interaction, and ensuring interviewer identity is enforced. We've also added session duration tracking to better understand user engagement.\n\nPerhaps most excitingly, we've significantly advanced our automated content generation. This involves a new workflow for creating blog posts, leveraging Gemini and GitHub Actions. We've seen this evolve from initial drafts on topics like the STAR method to more practical guides, including a recent post on ATS resume tips and a follow-up email guide, all aimed at giving users a real edge in their job search.\n\nHow do you see AI impacting the way we create and consume content in the coming years?",
+  "message": "test(password): obscure 'password' literal in HIBP comment",
+  "post": "We've been doing a lot of work lately to solidify our testing and CI infrastructure. It started with some adjustments to how we handle CodeQL, moving to an Advanced Setup with custom query configurations. This allows us to be more precise in our security analysis.\n\nFollowing that, we focused on improving our CI pipeline's resilience. We implemented changes to trigger workflows after history rewrites, ensuring that our automated checks run reliably even when the project's history is adjusted. We also added manual triggers for workflows, giving us more control over when tests are executed.\n\nFinally, as part of our ongoing commitment to security best practices, we've taken a small but important step to obscure sensitive literals like 'password' within our HIBP comments. This is a minor detail, but it contributes to a more robust and secure codebase.\n\nCollectively, these commits represent a significant step forward in making our development process more secure, reliable, and controllable. What aspects of CI/CD do you find most critical for maintaining code quality?",
   "alt": "",
   "snippet_path": "",
-  "linkedin_post_id": "urn:li:share:7463554296568197121",
+  "linkedin_post_id": "urn:li:share:7465738881439703040",
   "image": false
 }
