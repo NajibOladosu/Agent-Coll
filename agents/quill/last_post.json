@@ -1,10 +1,10 @@
 {
-  "sha": "cedd9d09ba823eef69255842eda0d8914e13a2db",
+  "sha": "d66d3411b63d988b773f1928af7cecf3a251e90d",
   "repo": "ApplyOS",
-  "message": "test(password): obscure 'password' literal in HIBP comment",
-  "post": "We've been doing a lot of work lately to solidify our testing and CI infrastructure. It started with some adjustments to how we handle CodeQL, moving to an Advanced Setup with custom query configurations. This allows us to be more precise in our security analysis.\n\nFollowing that, we focused on improving our CI pipeline's resilience. We implemented changes to trigger workflows after history rewrites, ensuring that our automated checks run reliably even when the project's history is adjusted. We also added manual triggers for workflows, giving us more control over when tests are executed.\n\nFinally, as part of our ongoing commitment to security best practices, we've taken a small but important step to obscure sensitive literals like 'password' within our HIBP comments. This is a minor detail, but it contributes to a more robust and secure codebase.\n\nCollectively, these commits represent a significant step forward in making our development process more secure, reliable, and controllable. What aspects of CI/CD do you find most critical for maintaining code quality?",
-  "alt": "",
-  "snippet_path": "",
-  "linkedin_post_id": "urn:li:share:7465738881439703040",
-  "image": false
+  "message": "fix(ai): ground answers in r\u00e9sum\u00e9 facts + build coherent multi-question sets",
+  "post": "When building an AI assistant for job applications, I ran into a common problem: the AI's answers felt generic and disconnected. It wasn't leveraging the candidate's actual background effectively.\n\nThe goal for ApplyOS (live at applyos.io) is to help candidates craft compelling application answers. To do this well, the AI needs to be grounded in the provided r\u00e9sum\u00e9 details and maintain a consistent narrative across multiple questions.\n\nI tackled this by modifying the prompt to explicitly instruct the AI to use *only* the provided background facts. Crucially, I also added a mechanism to pass previously answered questions back into the context for subsequent AI calls. This allows the AI to build upon its prior responses, ensuring a coherent and consistent tone and avoiding repetitive anecdotes.\n\nHow do you approach maintaining context and consistency when building AI agents that interact over multiple turns?",
+  "alt": "Code snippet showing the AI prompt construction, including passing previous answers and grounding rules.",
+  "snippet_path": "shared/infrastructure/ai.ts",
+  "linkedin_post_id": "urn:li:share:7466098545805266946",
+  "image": true
 }
