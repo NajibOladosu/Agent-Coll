@@ -1,10 +1,10 @@
 {
-  "sha": "d66d3411b63d988b773f1928af7cecf3a251e90d",
+  "sha": "867baf8a8c3e1efdbd2d2f1817b878ee18c58ff0",
   "repo": "ApplyOS",
-  "message": "fix(ai): ground answers in r\u00e9sum\u00e9 facts + build coherent multi-question sets",
-  "post": "When building an AI assistant for job applications, I ran into a common problem: the AI's answers felt generic and disconnected. It wasn't leveraging the candidate's actual background effectively.\n\nThe goal for ApplyOS (live at applyos.io) is to help candidates craft compelling application answers. To do this well, the AI needs to be grounded in the provided r\u00e9sum\u00e9 details and maintain a consistent narrative across multiple questions.\n\nI tackled this by modifying the prompt to explicitly instruct the AI to use *only* the provided background facts. Crucially, I also added a mechanism to pass previously answered questions back into the context for subsequent AI calls. This allows the AI to build upon its prior responses, ensuring a coherent and consistent tone and avoiding repetitive anecdotes.\n\nHow do you approach maintaining context and consistency when building AI agents that interact over multiple turns?",
-  "alt": "Code snippet showing the AI prompt construction, including passing previous answers and grounding rules.",
+  "message": "fix(lint): eliminate all 313 ESLint errors",
+  "post": "The last few days have been focused on improving the robustness of the ApplyOS (live at applyos.io) platform. Specifically, I've been working through a large batch of ESLint errors.\n\nIt might seem like a small task, but addressing these issues has led to cleaner, more predictable code, especially in areas handling external data and AI interactions. We're aiming for a more resilient system, so these foundational steps are crucial.\n\nOne area that saw a lot of refinement was how we handle type assertions and data parsing. It's a constant balancing act: making the code flexible enough to handle variations in external data while maintaining type safety. Explicitly casting and checking types, even when it feels a bit verbose, prevents subtle bugs down the line.\n\nWhat's your approach to managing type safety in rapidly evolving codebases?",
+  "alt": "TypeScript code snippet showing a conditional check for an error object and accessing its name property if it's an instance of Error.",
   "snippet_path": "shared/infrastructure/ai.ts",
-  "linkedin_post_id": "urn:li:share:7466098545805266946",
+  "linkedin_post_id": "urn:li:share:7466439435287494656",
   "image": true
 }
