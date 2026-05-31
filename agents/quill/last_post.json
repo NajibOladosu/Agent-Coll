@@ -1,10 +1,10 @@
 {
-  "sha": "867baf8a8c3e1efdbd2d2f1817b878ee18c58ff0",
+  "sha": "2663555b9c912f9d3b7e54f6dda3e1c2600ae9ce",
   "repo": "ApplyOS",
-  "message": "fix(lint): eliminate all 313 ESLint errors",
-  "post": "The last few days have been focused on improving the robustness of the ApplyOS (live at applyos.io) platform. Specifically, I've been working through a large batch of ESLint errors.\n\nIt might seem like a small task, but addressing these issues has led to cleaner, more predictable code, especially in areas handling external data and AI interactions. We're aiming for a more resilient system, so these foundational steps are crucial.\n\nOne area that saw a lot of refinement was how we handle type assertions and data parsing. It's a constant balancing act: making the code flexible enough to handle variations in external data while maintaining type safety. Explicitly casting and checking types, even when it feels a bit verbose, prevents subtle bugs down the line.\n\nWhat's your approach to managing type safety in rapidly evolving codebases?",
-  "alt": "TypeScript code snippet showing a conditional check for an error object and accessing its name property if it's an instance of Error.",
-  "snippet_path": "shared/infrastructure/ai.ts",
-  "linkedin_post_id": "urn:li:share:7466439435287494656",
+  "message": "feat(email): migrate to Resend, drop nodemailer + email_queue",
+  "post": "Migrating our email infrastructure at ApplyOS (live at applyos.io) from Nodemailer to Resend was a significant undertaking. Nodemailer, while powerful, came with a complex setup and a queueing system that required ongoing maintenance.\n\nThe goal was to simplify our email sending process, improve reliability, and reduce operational overhead. This involved replacing the existing SMTP transport with Resend's API.\n\nThe core decision was to embrace a more modern, API-first approach. This shift allowed us to remove the email queue entirely and rely on Resend's built-in handling for delivery and retries. It\u2019s a trade-off: less direct control over queuing, but significantly less code to manage.\n\nHas anyone else made a similar migration? What were your key learnings?",
+  "alt": "Function to get the Resend client, initializing it with an API key or throwing an error if the key is not set.",
+  "snippet_path": "shared/infrastructure/email/transport.ts",
+  "linkedin_post_id": "urn:li:share:7466803870384709634",
   "image": true
 }
