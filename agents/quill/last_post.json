@@ -1,10 +1,10 @@
 {
-  "sha": "2663555b9c912f9d3b7e54f6dda3e1c2600ae9ce",
+  "sha": "0475016bc3ff3bfde7a424a74539540ac8fe49a9",
   "repo": "ApplyOS",
-  "message": "feat(email): migrate to Resend, drop nodemailer + email_queue",
-  "post": "Migrating our email infrastructure at ApplyOS (live at applyos.io) from Nodemailer to Resend was a significant undertaking. Nodemailer, while powerful, came with a complex setup and a queueing system that required ongoing maintenance.\n\nThe goal was to simplify our email sending process, improve reliability, and reduce operational overhead. This involved replacing the existing SMTP transport with Resend's API.\n\nThe core decision was to embrace a more modern, API-first approach. This shift allowed us to remove the email queue entirely and rely on Resend's built-in handling for delivery and retries. It\u2019s a trade-off: less direct control over queuing, but significantly less code to manage.\n\nHas anyone else made a similar migration? What were your key learnings?",
-  "alt": "Function to get the Resend client, initializing it with an API key or throwing an error if the key is not set.",
-  "snippet_path": "shared/infrastructure/email/transport.ts",
-  "linkedin_post_id": "urn:li:share:7466803870384709634",
+  "message": "fix(email): center brand header via table layout",
+  "post": "The ApplyOS (applyos.io) email system has been a work in progress. Recently, we needed to refine the visual presentation of our emails, specifically the header.\n\nThe challenge was to ensure brand consistency across all email clients, which often have quirky rendering behaviors.\n\nWe landed on using an HTML table for the header layout. This approach provides reliable alignment and centering, even for older email clients that might struggle with modern CSS.\n\nIt's a reminder that sometimes the most robust solutions rely on older, well-understood patterns. What email rendering challenges have you faced?",
+  "alt": "HTML table structure for centering a logo and brand name in an email header.",
+  "snippet_path": "shared/infrastructure/email/templates/base.ts",
+  "linkedin_post_id": "urn:li:share:7467226926370217985",
   "image": true
 }
