@@ -1,10 +1,10 @@
 {
-  "sha": "0475016bc3ff3bfde7a424a74539540ac8fe49a9",
+  "sha": "e957f4b11a44a66b28d39953bbe36dfb3d6efcb1",
   "repo": "ApplyOS",
-  "message": "fix(email): center brand header via table layout",
-  "post": "The ApplyOS (applyos.io) email system has been a work in progress. Recently, we needed to refine the visual presentation of our emails, specifically the header.\n\nThe challenge was to ensure brand consistency across all email clients, which often have quirky rendering behaviors.\n\nWe landed on using an HTML table for the header layout. This approach provides reliable alignment and centering, even for older email clients that might struggle with modern CSS.\n\nIt's a reminder that sometimes the most robust solutions rely on older, well-understood patterns. What email rendering challenges have you faced?",
-  "alt": "HTML table structure for centering a logo and brand name in an email header.",
-  "snippet_path": "shared/infrastructure/email/templates/base.ts",
-  "linkedin_post_id": "urn:li:share:7467226926370217985",
-  "image": true
+  "message": "test(signup): add end-to-end integration test for account creation flow",
+  "post": "This past week has been a deep dive into making our application more robust and reliable, especially around core user flows and communication. We've been refining how our AI generates content, ensuring it stays grounded in the facts provided, whether that's for answering questions or crafting cover letters. This focus on accuracy and coherence is critical for building trust.\n\nSimultaneously, we've been cleaning up our codebase, tackling a significant number of linting errors to improve maintainability. We also made a strategic move with our email infrastructure, migrating to Resend and dropping older dependencies. This not only streamlines our email sending but also allowed us to remove a potential security vulnerability related to HTML sanitization.\n\nFinally, we've reinforced the account creation process by adding comprehensive end-to-end integration tests. This is about ensuring that when a new user signs up, that experience is as seamless and dependable as possible. We're building a foundation that can scale and perform under pressure.\n\nHow do you prioritize foundational improvements versus new feature development in your own projects?",
+  "alt": "",
+  "snippet_path": "",
+  "linkedin_post_id": "urn:li:share:7467554522605817856",
+  "image": false
 }
