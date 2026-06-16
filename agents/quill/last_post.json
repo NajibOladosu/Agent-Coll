@@ -1,10 +1,10 @@
 {
-  "sha": "82c48616355afafc04863a8b1dc26441d40602cb",
+  "sha": "6ce614e23a5da735e623f25f75a125782bef6b03",
   "repo": "ApplyOS",
-  "message": "feat: implement custom Checkbox component and update select-all toggle functionality",
-  "post": "Building ApplyOS (applyos.io) involves refining the user experience for managing job applications. A key part of this is the \"Apply Kit\" feature, which streamlines the application process. \n\nInitially, the select-all functionality for applications was basic. We needed a more robust way to handle different states: all selected, some selected, or none selected.\n\nThis led to implementing a custom Checkbox component. It supports an \"indeterminate\" state, visually indicating when only a subset of items are selected. This small UI detail makes it clearer to the user which items are being acted upon, especially when bulk actions are involved.\n\nHow do you approach custom UI components to ensure they are both functional and accessible?",
-  "alt": "A custom checkbox component that can display a checked state, an unchecked state, or an indeterminate state represented by a minus sign.",
-  "snippet_path": "shared/ui/checkbox.tsx",
-  "linkedin_post_id": "urn:li:share:7472301718945468418",
+  "message": "feat: reject too-short pasted job text in apply-kit parse",
+  "post": "Building ApplyOS (applyos.io) means handling a lot of unstructured text. A recent challenge was parsing pasted job descriptions.\n\nWe want to extract key details like job title, company, and location. But what happens when the user pastes something too brief? We risk misinterpreting or failing silently.\n\nThis led to adding a simple length check. If the pasted text is under 20 characters, we reject it upfront. It\u2019s a small guardrail, but it improves the reliability of the parsing logic that follows.\n\nHow do you handle obviously invalid input in your parsing flows?",
+  "alt": "A TypeScript code block that checks if the length of the sourceText variable is less than 20 and returns a JSON error response if it is.",
+  "snippet_path": "app/api/apply-kit/parse/route.ts",
+  "linkedin_post_id": "urn:li:share:7472640367100669952",
   "image": true
 }
