@@ -1,10 +1,10 @@
 {
-  "sha": "6ce614e23a5da735e623f25f75a125782bef6b03",
+  "sha": "664d60c670eb7b7a44b201e54ffa18c106130f0a",
   "repo": "ApplyOS",
-  "message": "feat: reject too-short pasted job text in apply-kit parse",
-  "post": "Building ApplyOS (applyos.io) means handling a lot of unstructured text. A recent challenge was parsing pasted job descriptions.\n\nWe want to extract key details like job title, company, and location. But what happens when the user pastes something too brief? We risk misinterpreting or failing silently.\n\nThis led to adding a simple length check. If the pasted text is under 20 characters, we reject it upfront. It\u2019s a small guardrail, but it improves the reliability of the parsing logic that follows.\n\nHow do you handle obviously invalid input in your parsing flows?",
-  "alt": "A TypeScript code block that checks if the length of the sourceText variable is less than 20 and returns a JSON error response if it is.",
-  "snippet_path": "app/api/apply-kit/parse/route.ts",
-  "linkedin_post_id": "urn:li:share:7472640367100669952",
-  "image": true
+  "message": "fix(ci): blog autopost opens PR instead of pushing to protected main (#38)",
+  "post": "This past week has been focused on tightening up our internal processes and making our application more robust, particularly around the Apply Kit. We've been working to ensure that the Apply Kit is easily discoverable, linking it from key areas like the sidebar and dashboard. We also added end-to-end tests to verify its core functionality and refined its placement with a clearer call to action on the applications page.\n\nBehind the scenes, we've been strengthening our security by protecting the /apply route with authentication, ensuring only authorized users can access this sensitive area. We also made improvements to our UI components, like a custom Checkbox, to enhance user experience.\n\nA significant theme has emerged in how we manage our development workflow. We've been addressing potential security vulnerabilities identified by CodeQL, fixing issues related to sanitization, escaping, and regular expressions. This focus on code quality and security extends to our continuous integration pipeline. In a notable change, our blog autopost now opens a pull request instead of directly pushing to the protected main branch. This shift provides an extra layer of review and control, ensuring that all content updates are carefully considered before being merged.\n\nThis evolution in our CI/CD process reflects a broader commitment to building a more secure and reliable platform through deliberate, staged workflows.\n\nHow do you approach introducing changes to your core development processes?",
+  "alt": "",
+  "snippet_path": "",
+  "linkedin_post_id": "urn:li:share:7472993093152329729",
+  "image": false
 }
